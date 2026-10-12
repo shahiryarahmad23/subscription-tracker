@@ -1,6 +1,6 @@
 # Subscription Tracker 
 
-![Project Screenshot](images/design.png)
+![Project Screenshot](images/Design.png)
 
 ## Description
 Subscription tracker is a personalised application for keeping track of your online subscription at one centralised place. From here you can see the amount of subscriptions that you own at the current moment and the total spendings on those subscription.
