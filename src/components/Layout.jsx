@@ -23,9 +23,7 @@ export default function Layout() {
                 <NavLink
                   to={link.to}
                   end={link.end}
-                  className={({ isActive }) =>
-                    isActive ? 'nav-link is-active' : 'nav-link'
-                  }
+                  className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
                 >
                   {link.label}
                 </NavLink>
