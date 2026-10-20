@@ -3,9 +3,9 @@ import { CURRENCIES, SERVICES } from './data.js'
 const STORAGE_KEY = 'subscription-tracker.subscriptions'
 
 function isPositiveNumber(value) {
-  const text = value.trim()
-  if (!/^\d+(\.\d+)?$/.test(text)) return false
-  return Number(text) > 0
+  const text = String(value ?? "").trim()
+  const n = Number(text)
+  return text !== "" && Number.isFinite(n) && n > 0
 }
 
 export function validateForm(form) {
