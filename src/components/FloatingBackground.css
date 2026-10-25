@@ -1,0 +1,151 @@
+.app-shell {
+  position: relative;
+}
+
+.site-header,
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.floating-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-icon {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  animation: float-icon var(--float-duration) ease-in-out infinite;
+  animation-delay: var(--float-delay);
+}
+
+.floating-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+  filter: drop-shadow(0 10px 18px rgba(80, 100, 160, 0.28))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.85));
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.floating-icon:hover img {
+  transform: translateY(-8px) scale(1.06) rotate(-6deg);
+}
+
+.icon-netflix {
+  top: 14%;
+  left: calc((100vw - 1160px) / 2 - 150px);
+}
+
+.icon-spotify {
+  top: 46%;
+  left: calc((100vw - 1160px) / 2 - 190px);
+}
+
+.icon-youtube {
+  bottom: 6%;
+  left: calc((100vw - 1160px) / 2 - 130px);
+}
+
+.icon-apple {
+  top: 12%;
+  right: calc((100vw - 1160px) / 2 - 150px);
+}
+
+.icon-discord {
+  top: 48%;
+  right: calc((100vw - 1160px) / 2 - 190px);
+}
+
+.icon-prime {
+  bottom: 8%;
+  right: calc((100vw - 1160px) / 2 - 130px);
+}
+
+@keyframes float-icon {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (max-width: 1280px) {
+  .floating-icon {
+    width: 88px;
+    height: 88px;
+  }
+
+  .icon-youtube,
+  .icon-discord {
+    display: none;
+  }
+
+  .icon-netflix {
+    top: 16%;
+    left: 8px;
+  }
+
+  .icon-spotify {
+    bottom: 12%;
+    top: auto;
+    left: 8px;
+  }
+
+  .icon-apple {
+    top: 16%;
+    right: 8px;
+  }
+
+  .icon-prime {
+    bottom: 12%;
+    right: 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .icon-spotify,
+  .icon-prime,
+  .icon-youtube,
+  .icon-discord {
+    display: none;
+  }
+
+  .floating-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .icon-netflix {
+    top: auto;
+    bottom: 16px;
+    left: -6px;
+  }
+
+  .icon-apple {
+    top: auto;
+    bottom: 16px;
+    right: -6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-icon {
+    animation: none;
+  }
+
+  .floating-icon img {
+    transition: none;
+  }
+}

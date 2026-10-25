@@ -1,10 +1,18 @@
 import { useState } from 'react'
+import { ApiError } from '../api.js'
 import { CURRENCIES, SERVICES, emptyForm } from '../data.js'
-import { formToSubscription, validateForm } from '../subscription.js'
+import { validateForm } from '../subscription.js'
 
-export default function SubscriptionForm({ onSubmit, onCancel, onEdit }) {
-  const [form, setForm] = useState(emptyForm)
+export default function SubscriptionForm({
+  initialForm,
+  submitLabel = 'Save subscription',
+  onSubmit,
+  onCancel,
+  onEdit,
+}) {
+  const [form, setForm] = useState(initialForm || emptyForm)
   const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
 
   function updateField(name, value) {
     setForm((current) => ({ ...current, [name]: value }))
@@ -12,14 +20,26 @@ export default function SubscriptionForm({ onSubmit, onCancel, onEdit }) {
     onEdit()
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
     const nextErrors = validateForm(form)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return
-    onSubmit(formToSubscription(form))
-    setForm(emptyForm)
-    setErrors({})
+
+    setSubmitting(true)
+    try {
+      await onSubmit(form)
+      if (!initialForm) setForm(emptyForm)
+      setErrors({})
+    } catch (error) {
+      if (error instanceof ApiError && Object.keys(error.fields).length > 0) {
+        setErrors(error.fields)
+      } else {
+        setErrors({ form: error.message || 'Could not save the subscription.' })
+      }
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -34,7 +54,7 @@ export default function SubscriptionForm({ onSubmit, onCancel, onEdit }) {
           >
             <option value="">Select a service</option>
             {SERVICES.map((service) => (
-              <option key={service} value={service}>
+                <option key={service} value={service}>
                 {service}
               </option>
             ))}
@@ -98,7 +118,7 @@ export default function SubscriptionForm({ onSubmit, onCancel, onEdit }) {
           <input
             id="duration"
             type="text"
-            inputMode="decimal"
+            inputMode="numeric"
             value={form.duration}
             onChange={(event) => updateField('duration', event.target.value)}
           />
@@ -106,9 +126,13 @@ export default function SubscriptionForm({ onSubmit, onCancel, onEdit }) {
         </div>
       </div>
 
+      {errors.form && <p className="field-error">{errors.form}</p>}
+
       <div className="form-actions">
-        <button type="submit">Save subscription</button>
-        <button type="button" className="button-quiet" onClick={onCancel}>
+        <button type="submit" disabled={submitting}>
+          {submitting ? 'Saving…' : submitLabel}
+        </button>
+        <button type="button" className="button-quiet" onClick={onCancel} disabled={submitting}>
           Cancel
         </button>
       </div>

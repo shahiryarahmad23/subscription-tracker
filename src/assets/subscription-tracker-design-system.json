@@ -1,0 +1,430 @@
+{
+  "meta": {
+    "name": "Subscription Tracker Design System",
+    "version": "1.0.0",
+    "description": "Light, airy glassmorphism UI for a subscription tracking app. Frosted translucent panels float over a soft lavender-white gradient, with navy typography, a single blue accent, and floating 3D app-icon decoration.",
+    "styleKeywords": ["glassmorphism", "frosted glass", "soft gradient", "airy", "light mode", "rounded", "premium fintech", "3D floating icons", "minimal"],
+    "referenceCanvas": { "width": 1672, "height": 940, "note": "Values are measured from a 1672x940 mockup. Scale proportionally for real layouts." },
+    "colorsAreApproximate": true,
+    "instructionsForAI": [
+      "Use ONLY the tokens defined in this file. Do not invent new colors, radii, or shadows.",
+      "Every surface (nav, list card, summary card) is a frosted glass panel: translucent white + backdrop blur + 1px light border + soft shadow.",
+      "Primary text is deep navy, secondary text is muted slate-blue. Never use pure black or pure gray.",
+      "There is exactly one primary CTA style (dark navy pill). There is exactly one active-nav style (light blue pill with blue text).",
+      "Keep generous whitespace and large radii. Avoid hard borders, heavy shadows, and saturated backgrounds.",
+      "Currency is PKR, formatted as 'PKR 1,465' (prefix, space, thousands separator, no decimals).",
+      "All remaining-time and total values must be computed from data, never hardcoded."
+    ]
+  },
+
+  "tokens": {
+    "color": {
+      "background": {
+        "base": "#EEF1FA",
+        "gradient": "linear-gradient(135deg, #F7F8FE 0%, #E9EEFA 45%, #DDE4F5 100%)",
+        "glowTopRight": "radial-gradient(circle at 80% 10%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 50%)",
+        "floorReflection": "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 85%, rgba(230,235,248,0.8) 100%)"
+      },
+      "surface": {
+        "glass": "rgba(255, 255, 255, 0.62)",
+        "glassStrong": "rgba(255, 255, 255, 0.78)",
+        "glassSubtle": "rgba(255, 255, 255, 0.40)",
+        "border": "rgba(255, 255, 255, 0.85)",
+        "borderSoft": "rgba(200, 210, 235, 0.55)",
+        "divider": "rgba(190, 200, 228, 0.45)"
+      },
+      "text": {
+        "primary": "#0B1B3F",
+        "secondary": "#6F7FA6",
+        "tertiary": "#8E9BBD",
+        "onDark": "#FFFFFF",
+        "accent": "#2457D6"
+      },
+      "accent": {
+        "primary": "#2457D6",
+        "primarySoftBg": "rgba(222, 234, 255, 0.85)",
+        "primarySoftBorder": "rgba(160, 190, 245, 0.7)"
+      },
+      "button": {
+        "primaryBg": "linear-gradient(180deg, #1E2F63 0%, #14214A 100%)",
+        "primaryBgFlat": "#172552",
+        "primaryText": "#FFFFFF"
+      },
+      "badge": {
+        "planBg": "rgba(205, 220, 245, 0.65)",
+        "planText": "#6F7FA6"
+      },
+      "status": {
+        "active": "#22C55E",
+        "expiringOrAttention": "#F25C6E",
+        "note": "In the mockup the dot beside each service name is red for Netflix and green for Spotify. Treat it as a status indicator: green = healthy/active, red = needs attention/long-term or brand-colored. Make the rule configurable."
+      },
+      "brand": {
+        "netflix": { "icon": "#E50914", "tileBg": "#111111" },
+        "spotify": { "icon": "#1DB954", "tileBg": "#0B0B0B" }
+      }
+    },
+
+    "typography": {
+      "fontFamily": {
+        "primary": "'Plus Jakarta Sans', 'Inter', 'SF Pro Display', system-ui, -apple-system, 'Segoe UI', sans-serif",
+        "note": "Geometric, friendly sans-serif. Plus Jakarta Sans or Inter are close matches."
+      },
+      "scale": {
+        "pageTitle": { "size": "56px", "weight": 700, "lineHeight": 1.1, "letterSpacing": "-0.02em", "color": "text.primary" },
+        "pageSubtitle": { "size": "24px", "weight": 400, "lineHeight": 1.4, "color": "text.secondary", "maxWidth": "600px" },
+        "brandName": { "size": "20px", "weight": 600, "color": "text.primary" },
+        "navLink": { "size": "17px", "weight": 500, "color": "text.secondary" },
+        "navLinkActive": { "size": "17px", "weight": 500, "color": "accent.primary" },
+        "itemName": { "size": "24px", "weight": 600, "color": "text.primary" },
+        "itemMeta": { "size": "18px", "weight": 400, "color": "text.tertiary" },
+        "itemPrice": { "size": "24px", "weight": 700, "color": "text.primary" },
+        "badge": { "size": "16px", "weight": 500, "color": "badge.planText" },
+        "summaryLabel": { "size": "18px", "weight": 500, "color": "text.secondary" },
+        "summaryValue": { "size": "36px", "weight": 700, "letterSpacing": "-0.01em", "color": "text.primary" },
+        "summaryMeta": { "size": "18px", "weight": 400, "color": "text.secondary" },
+        "buttonLabel": { "size": "18px", "weight": 600, "color": "button.primaryText" }
+      },
+      "numerals": "Use tabular-nums for prices and totals so digits align."
+    },
+
+    "spacing": {
+      "unit": "4px",
+      "scale": { "xs": "4px", "sm": "8px", "md": "12px", "lg": "16px", "xl": "24px", "2xl": "32px", "3xl": "48px" },
+      "pageGutterX": "253px at 1672px width (centered container, max-width ~1160px)",
+      "sectionGap": "40px",
+      "columnGap": "28px"
+    },
+
+    "radius": {
+      "navbar": "24px",
+      "card": "20px",
+      "iconTile": "14px",
+      "pill": "999px",
+      "badge": "999px",
+      "button": "999px",
+      "avatarButton": "999px"
+    },
+
+    "shadow": {
+      "glassCard": "0 10px 40px rgba(90, 110, 170, 0.12), inset 0 1px 0 rgba(255,255,255,0.9)",
+      "navbar": "0 6px 30px rgba(90, 110, 170, 0.10), inset 0 1px 0 rgba(255,255,255,0.9)",
+      "primaryButton": "0 10px 24px rgba(20, 33, 74, 0.28)",
+      "floatingIcon": "0 24px 40px rgba(80, 100, 160, 0.25)"
+    },
+
+    "blur": {
+      "glass": "backdrop-filter: blur(24px) saturate(140%)",
+      "glassStrong": "backdrop-filter: blur(32px) saturate(150%)"
+    },
+
+    "borders": {
+      "glass": "1px solid rgba(255, 255, 255, 0.85)",
+      "divider": "1px solid rgba(190, 200, 228, 0.45)"
+    },
+
+    "motion": {
+      "duration": { "fast": "150ms", "base": "250ms", "slow": "600ms" },
+      "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "hover": "Cards lift 2px and glass brightens (surface.glassStrong). Buttons brighten slightly.",
+      "pressed": "scale(0.98)",
+      "floatingIcons": "Slow vertical float (6-9s ease-in-out infinite, +/-10px) with slight rotation; staggered delays. Respect prefers-reduced-motion."
+    },
+
+    "iconography": {
+      "ui": "Line icons, 1.75px stroke, rounded caps (Lucide recommended). Sizes: 16px, 20px, 24px.",
+      "used": ["chevron-right", "plus", "users", "user"],
+      "serviceIcons": "App logos in rounded-square dark tiles (70x70, radius 14px)."
+    }
+  },
+
+  "layout": {
+    "page": {
+      "background": "tokens.color.background.gradient",
+      "structure": ["decorativeLayer (absolute, behind)", "navbar (floating, top)", "pageHeader", "contentGrid"],
+      "container": { "maxWidth": "1160px", "marginX": "auto" },
+      "topOffset": "67px to navbar"
+    },
+    "contentGrid": {
+      "type": "css-grid",
+      "columns": "minmax(0, 1fr) 293px",
+      "gap": "28px",
+      "alignItems": "start",
+      "left": "subscriptionList",
+      "right": "summaryCard",
+      "responsive": {
+        "<1024px": "Single column; summaryCard moves above or below list, full width.",
+        "<640px": "Navbar collapses (hide labels, keep logo + avatar + icon nav); floating decorative icons hidden; page title 36px, subtitle 18px."
+      }
+    }
+  },
+
+  "components": {
+    "navbar": {
+      "role": "Top floating glass navigation bar",
+      "size": { "height": "69px", "width": "100% of container" },
+      "style": {
+        "background": "surface.glass",
+        "border": "borders.glass",
+        "radius": "radius.navbar",
+        "shadow": "shadow.navbar",
+        "blur": "blur.glass",
+        "padding": "0 28px 0 28px"
+      },
+      "layout": "flex, space-between, align-center",
+      "children": {
+        "brand": {
+          "logoTile": { "size": "42px", "radius": "12px", "background": "#14214A", "glyph": "S", "glyphColor": "#FFFFFF", "glyphWeight": 700 },
+          "name": { "text": "Subscription Tracker", "typography": "brandName", "gapFromLogo": "16px" }
+        },
+        "links": {
+          "items": ["Home", "Subscriptions", "Total"],
+          "gap": "12px",
+          "item": { "padding": "10px 24px", "radius": "pill", "typography": "navLink" },
+          "activeItem": {
+            "background": "accent.primarySoftBg",
+            "border": "1px solid accent.primarySoftBorder",
+            "color": "accent.primary",
+            "shadow": "0 4px 14px rgba(36, 87, 214, 0.12)"
+          },
+          "hover": "background surface.glassSubtle"
+        },
+        "avatarButton": {
+          "size": "40px",
+          "radius": "999px",
+          "background": "rgba(225, 232, 248, 0.9)",
+          "border": "1px solid rgba(255,255,255,0.9)",
+          "icon": "user (line, 20px, color text.primary)"
+        }
+      }
+    },
+
+    "pageHeader": {
+      "title": { "text": "Subscriptions", "typography": "pageTitle" },
+      "subtitle": { "text": "Every saved plan appears here with its price, start date, and time remaining.", "typography": "pageSubtitle" },
+      "spacing": { "navbarToTitle": "80px", "titleToSubtitle": "8px", "headerToContent": "32px" }
+    },
+
+    "subscriptionList": {
+      "role": "Single glass card containing subscription rows separated by dividers",
+      "style": {
+        "background": "surface.glass",
+        "border": "borders.glass",
+        "radius": "radius.card",
+        "shadow": "shadow.glassCard",
+        "blur": "blur.glass",
+        "padding": "0"
+      },
+      "rowDivider": "borders.divider",
+      "emptyState": "Centered muted text 'No subscriptions yet' with the primary Add subscription button."
+    },
+
+    "subscriptionRow": {
+      "role": "Clickable row; entire row navigates to subscription detail",
+      "size": { "minHeight": "116px", "padding": "24px 32px" },
+      "layout": "grid: [icon 70px] [content 1fr] [price auto] [chevron 24px], column-gap 24px, align-items center",
+      "children": {
+        "serviceIcon": { "size": "70px", "radius": "radius.iconTile", "overflow": "hidden", "shadow": "0 6px 14px rgba(0,0,0,0.18)" },
+        "statusDot": { "size": "14px", "radius": "50%", "colors": { "active": "status.active", "attention": "status.expiringOrAttention" }, "gapToName": "12px" },
+        "titleLine": "flex, align-center, gap 12px: [statusDot] [serviceName] [planBadge]",
+        "serviceName": { "typography": "itemName", "examples": ["Netflix", "Spotify"] },
+        "planBadge": {
+          "typography": "badge",
+          "background": "badge.planBg",
+          "padding": "4px 14px",
+          "radius": "radius.badge",
+          "examples": ["4 Screens", "Single person"]
+        },
+        "metaLine": {
+          "typography": "itemMeta",
+          "format": "Started {DD Mon YYYY} · {duration label} · {N} days left",
+          "separator": " · ",
+          "examples": [
+            "Started 10 Oct 2026 · 12 months · 363 days left",
+            "Started 12 Oct 2026 · 1 month · 31 days left"
+          ],
+          "marginTop": "6px"
+        },
+        "price": { "typography": "itemPrice", "format": "PKR {amount with thousands separator}", "examples": ["PKR 1,100", "PKR 365"], "align": "right" },
+        "chevron": { "icon": "chevron-right", "size": "20px", "color": "text.secondary" }
+      },
+      "states": {
+        "hover": "background: rgba(255,255,255,0.35); chevron translateX(2px)",
+        "focusVisible": "2px ring accent.primary at 40% opacity, offset 2px",
+        "pressed": "background: rgba(255,255,255,0.5)"
+      }
+    },
+
+    "summaryCard": {
+      "role": "Sticky glass card with monthly total and Add action",
+      "size": { "width": "293px", "padding": "28px" },
+      "style": {
+        "background": "surface.glass",
+        "border": "borders.glass",
+        "radius": "radius.card",
+        "shadow": "shadow.glassCard",
+        "blur": "blur.glass"
+      },
+      "position": "sticky; top: 24px",
+      "children": {
+        "label": { "text": "Monthly total", "typography": "summaryLabel" },
+        "value": { "typography": "summaryValue", "format": "PKR {sum of monthly prices}", "example": "PKR 1,465", "marginTop": "8px" },
+        "meta": {
+          "typography": "summaryMeta",
+          "icon": "users (line, 20px, color #9AA8CC)",
+          "format": "{N} active plans",
+          "example": "2 active plans",
+          "marginTop": "12px"
+        },
+        "addButton": { "ref": "components.buttonPrimary", "label": "Add subscription", "icon": "plus", "fullWidth": true, "marginTop": "28px" }
+      }
+    },
+
+    "buttonPrimary": {
+      "height": "54px",
+      "padding": "0 28px",
+      "radius": "radius.button",
+      "background": "button.primaryBg",
+      "color": "button.primaryText",
+      "typography": "buttonLabel",
+      "shadow": "shadow.primaryButton",
+      "layout": "inline-flex, center, gap 12px",
+      "states": {
+        "hover": "filter: brightness(1.12); translateY(-1px)",
+        "pressed": "scale(0.98)",
+        "disabled": "opacity 0.5; no shadow",
+        "focusVisible": "2px ring #2457D6 offset 2px"
+      }
+    },
+
+    "planBadge": {
+      "background": "badge.planBg",
+      "color": "badge.planText",
+      "typography": "badge",
+      "padding": "4px 14px",
+      "radius": "999px"
+    },
+
+    "floatingIconDecor": {
+      "role": "Purely decorative 3D app-icon tiles floating around the page edges. aria-hidden, pointer-events none.",
+      "visibility": "Hide below 1024px. Never overlap the navbar or cards' content.",
+      "tile": {
+        "shape": "rounded cube / squircle with 3D tilt (rotate 8-20deg, perspective)",
+        "size": "100-130px",
+        "radius": "28px",
+        "shadow": "shadow.floatingIcon"
+      },
+      "orbitRings": "Thin 1px translucent white elliptical ring around some tiles, rotated about -10deg",
+      "bubbles": "Small glossy translucent spheres (20-50px), white radial gradient with soft highlight",
+      "placement": {
+        "left": ["Netflix (top-left, tilted, dark tile with red N)", "Spotify (mid-left, green tile with ring)", "YouTube (bottom-left, white tile with red play)"],
+        "right": ["Apple (top-right, white tile)", "Discord (blue tile)", "Google Drive (white tile)", "Microsoft Office (white tile)"],
+        "bottomCenterRight": ["Prime Video (blue tile)"]
+      },
+      "zIndex": 0,
+      "implementation": "Use pre-rendered PNG/WebP assets with transparent background; do not recreate 3D in CSS."
+    }
+  },
+
+  "dataModel": {
+    "Subscription": {
+      "id": "string (uuid)",
+      "serviceName": "string, e.g. 'Netflix'",
+      "serviceKey": "enum: netflix | spotify | youtube | apple | discord | google_drive | office | prime_video | custom",
+      "planLabel": "string, e.g. '4 Screens' or 'Single person'",
+      "price": "integer, PKR per billing cycle (no decimals)",
+      "currency": "string, default 'PKR'",
+      "startDate": "ISO date, e.g. '2026-10-10'",
+      "durationMonths": "integer, e.g. 12 or 1",
+      "status": "enum: active | expiring | expired",
+      "iconUrl": "string"
+    },
+    "derived": {
+      "endDate": "startDate + durationMonths",
+      "daysLeft": "max(0, endDate - today) in whole days",
+      "durationLabel": "1 month -> '1 month'; n months -> 'n months'",
+      "monthlyTotal": "sum of price of active subscriptions (mockup: 1100 + 365 = 1465)",
+      "activePlansCount": "count where status != expired"
+    },
+    "sample": [
+      { "serviceName": "Netflix", "serviceKey": "netflix", "planLabel": "4 Screens", "price": 1100, "startDate": "2026-10-10", "durationMonths": 12, "status": "attention-or-active" },
+      { "serviceName": "Spotify", "serviceKey": "spotify", "planLabel": "Single person", "price": 365, "startDate": "2026-10-12", "durationMonths": 1, "status": "active" }
+    ],
+    "note": "The mockup shows '363 days left' for Netflix, which does not match a 12-month plan started 10 Oct 2026 viewed on 25 Oct 2026 (expected ~350). Always compute daysLeft from real dates."
+  },
+
+  "screens": {
+    "subscriptions": {
+      "route": "/subscriptions",
+      "activeNav": "Subscriptions",
+      "sections": ["navbar", "pageHeader", "contentGrid(subscriptionList + summaryCard)", "floatingIconDecor"]
+    },
+    "otherNavTargets": {
+      "home": { "route": "/", "note": "Not designed yet. Reuse the same shell and glass components." },
+      "total": { "route": "/total", "note": "Not designed yet. Reuse summaryCard style for aggregate stats." }
+    },
+    "addSubscriptionFlow": {
+      "trigger": "buttonPrimary 'Add subscription'",
+      "presentation": "Glass modal (radius 24px, surface.glassStrong, backdrop dim rgba(11,27,63,0.25))",
+      "fields": ["Service (select with icon)", "Plan label", "Price (PKR)", "Start date", "Duration (months)"],
+      "actions": ["Save (buttonPrimary)", "Cancel (text button, text.secondary)"]
+    }
+  },
+
+  "accessibility": {
+    "contrast": "Ensure text.secondary and text.tertiary on glass meet at least 4.5:1 for body text; if not, darken by 10-15%.",
+    "focus": "Visible focus rings on all interactive elements.",
+    "semantics": "Navbar uses <nav>, list uses <ul>/<li> with row as <a> or <button>; decorative icons use aria-hidden='true'.",
+    "motion": "Disable floating animation under prefers-reduced-motion.",
+    "touchTargets": "Minimum 44x44px."
+  },
+
+  "implementation": {
+    "recommendedStack": {
+      "note": "Adapt to the project's stack. Tokens map directly to CSS variables / Tailwind theme.",
+      "styling": "Tailwind CSS with theme extension, or CSS variables",
+      "icons": "lucide-react",
+      "font": "Plus Jakarta Sans via next/font or Google Fonts"
+    },
+    "cssVariablesExample": {
+      "--bg-gradient": "linear-gradient(135deg, #F7F8FE 0%, #E9EEFA 45%, #DDE4F5 100%)",
+      "--glass": "rgba(255,255,255,0.62)",
+      "--glass-border": "rgba(255,255,255,0.85)",
+      "--text-primary": "#0B1B3F",
+      "--text-secondary": "#6F7FA6",
+      "--accent": "#2457D6",
+      "--accent-soft": "rgba(222,234,255,0.85)",
+      "--btn-bg": "linear-gradient(180deg,#1E2F63 0%,#14214A 100%)",
+      "--radius-card": "20px",
+      "--radius-nav": "24px",
+      "--shadow-glass": "0 10px 40px rgba(90,110,170,0.12)"
+    },
+    "glassMixin": "background: var(--glass); border: 1px solid var(--glass-border); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%); box-shadow: var(--shadow-glass);",
+    "suggestedComponentTree": [
+      "AppShell",
+      "  Background + FloatingIconDecor",
+      "  Navbar (BrandLogo, NavLinks, AvatarButton)",
+      "  PageHeader",
+      "  ContentGrid",
+      "    SubscriptionList > SubscriptionRow[]",
+      "    SummaryCard > AddSubscriptionButton"
+    ]
+  },
+
+  "doAndDont": {
+    "do": [
+      "Keep all panels translucent with backdrop blur over the gradient background.",
+      "Use large radii (20-24px cards, pill buttons).",
+      "Use navy for primary text and a single blue accent for active states.",
+      "Format money as 'PKR 1,465' and dates as '10 Oct 2026'.",
+      "Use ' · ' as the separator in meta lines."
+    ],
+    "dont": [
+      "Don't use opaque white or gray cards, or dark mode colors, unless a dark theme is explicitly requested.",
+      "Don't add heavy borders, drop shadows, or additional accent colors.",
+      "Don't use emoji for service icons; use real brand logos in rounded tiles.",
+      "Don't hardcode days left, totals, or active plan counts.",
+      "Don't place decorative floating icons over interactive content."
+    ]
+  }
+}

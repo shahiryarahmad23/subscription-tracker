@@ -1,4 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
+import FloatingBackground from './FloatingBackground.jsx'
 
 const links = [
   { to: '/', label: 'Home', end: true },
@@ -7,8 +9,11 @@ const links = [
 ]
 
 export default function Layout() {
+  const { user, logout } = useAuth()
+
   return (
     <div className="app-shell">
+      <FloatingBackground />
       <header className="site-header">
         <nav className="navbar" aria-label="Primary">
           <NavLink to="/" className="brand" end>
@@ -30,6 +35,19 @@ export default function Layout() {
               </li>
             ))}
           </ul>
+          {user && (
+            <div className="session">
+              <span className="avatar" aria-hidden="true">
+                {user.username.slice(0, 1).toUpperCase()}
+              </span>
+              <span>
+                {user.username} · {user.role}
+              </span>
+              <button type="button" className="button-quiet" onClick={logout}>
+                Log out
+              </button>
+            </div>
+          )}
         </nav>
       </header>
       <main className="content">
@@ -38,3 +56,4 @@ export default function Layout() {
     </div>
   )
 }
+

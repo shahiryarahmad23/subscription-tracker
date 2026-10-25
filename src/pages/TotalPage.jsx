@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { CURRENCIES } from '../data.js'
+import { useAuth } from '../context/AuthContext.jsx'
 import { useSubscriptions } from '../context/SubscriptionsContext.jsx'
 import { convertTotals, formatDate, formatPrice, totalsByCurrency } from '../subscription.js'
 
 export default function TotalPage() {
-  const { subscriptions } = useSubscriptions()
+  const { user } = useAuth()
+  const { subscriptions, loading: subscriptionsLoading } = useSubscriptions()
   const [target, setTarget] = useState('USD')
   const [attempt, setAttempt] = useState(0)
   const [status, setStatus] = useState('idle')
@@ -79,11 +81,14 @@ export default function TotalPage() {
       <header className="page-header">
         <h1>Total</h1>
         <p className="lede">
-          Monthly spending from the subscriptions saved in this browser, converted with the
-          ExchangeRate-API.
+          {user
+            ? 'Monthly spending from your saved subscriptions, converted with the ExchangeRate-API.'
+            : 'Log in to see your spending.'}
         </p>
       </header>
 
+      {user && !subscriptionsLoading && (
+        <>
       <div className="field convert-field">
         <label htmlFor="display-currency">Show total in</label>
         <select
@@ -140,6 +145,9 @@ export default function TotalPage() {
           </article>
         </div>
       </section>
+        </>
+      )}
+      {user && subscriptionsLoading && <p>Loading subscriptions…</p>}
     </article>
   )
 }

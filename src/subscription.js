@@ -1,11 +1,13 @@
 import { CURRENCIES, SERVICES } from './data.js'
 
-const STORAGE_KEY = 'subscription-tracker.subscriptions'
-
 function isPositiveNumber(value) {
-  const text = String(value ?? "").trim()
-  const n = Number(text)
-  return text !== "" && Number.isFinite(n) && n > 0
+  const text = String(value ?? '').trim()
+  const number = Number(text)
+  return text !== '' && Number.isFinite(number) && number > 0
+}
+
+function isPositiveInteger(value) {
+  return /^[1-9]\d*$/.test(String(value ?? '').trim())
 }
 
 export function validateForm(form) {
@@ -41,53 +43,11 @@ export function validateForm(form) {
 
   if (form.duration.trim() === '') {
     errors.duration = 'Enter a duration.'
-  } else if (!isPositiveNumber(form.duration)) {
-    errors.duration = 'Duration must be a number of months greater than 0.'
+  } else if (!isPositiveInteger(form.duration)) {
+    errors.duration = 'Duration must be a whole number of months greater than 0.'
   }
 
   return errors
-}
-
-export function formToSubscription(form) {
-  return {
-    serviceName: form.serviceName,
-    planName: form.planName.trim(),
-    price: Number(form.price),
-    currency: form.currency,
-    startDate: form.startDate,
-    durationMonths: Number(form.duration),
-    active: true,
-  }
-}
-
-function isSavedSubscription(item) {
-  return (
-    item &&
-    typeof item.id === 'string' &&
-    typeof item.serviceName === 'string' &&
-    typeof item.planName === 'string' &&
-    typeof item.price === 'number' &&
-    typeof item.currency === 'string' &&
-    typeof item.startDate === 'string' &&
-    typeof item.durationMonths === 'number' &&
-    typeof item.active === 'boolean'
-  )
-}
-
-export function loadSubscriptions() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return []
-    const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return []
-    return parsed.filter(isSavedSubscription)
-  } catch {
-    return []
-  }
-}
-
-export function saveSubscriptions(subscriptions) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(subscriptions))
 }
 
 export function formatPrice(price, currency) {
