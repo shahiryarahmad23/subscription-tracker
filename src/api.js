@@ -1,4 +1,15 @@
-const API_BASE = 'http://127.0.0.1:8000'
+const API_BASE = '/api'
+
+let memoryAccessToken = ''
+let refreshInFlight = null
+
+export function setMemoryAccessToken(token) {
+  memoryAccessToken = token || ''
+}
+
+export function getMemoryAccessToken() {
+  return memoryAccessToken
+}
 
 const FIELD_NAMES = {
   service_name: 'serviceName',
@@ -68,24 +79,32 @@ export function isAccessTokenExpired(token) {
   return Date.now() >= claims.exp * 1000
 }
 
-export async function apiRequest(path, { method = 'GET', body, token } = {}) {
-  if (token && isAccessTokenExpired(token)) {
-    throw new ApiError('Your session has expired. Log in again.', 401, 'Not authenticated')
+export async function apiRequest(path, { method = 'GET', body, token, skipRefresh = false, anonymous = false } = {}) {
+  let bearer = anonymous ? '' : token || memoryAccessToken
+  if (!skipRefresh && !anonymous && bearer && isAccessTokenExpired(bearer)) {
+    const renewed = await refreshAccessToken()
+    bearer = renewed.access_token
   }
 
   const headers = { Accept: 'application/json' }
   if (body !== undefined) headers['Content-Type'] = 'application/json'
-  if (token) headers.Authorization = 'Bearer ' + token
+  if (bearer) headers.Authorization = 'Bearer ' + bearer
 
   let response
   try {
     response = await fetch(API_BASE + path, {
       method,
       headers,
+      credentials: 'include',
       body: body !== undefined ? JSON.stringify(body) : undefined,
     })
   } catch {
     throw new ApiError('Could not reach the server.', 0, null)
+  }
+
+  if (response.status === 401 && !skipRefresh && path !== '/user/refresh' && path !== '/user/login') {
+    const renewed = await refreshAccessToken()
+    return apiRequest(path, { method, body, token: renewed.access_token, skipRefresh: true })
   }
 
   if (response.status === 204) return null
@@ -107,18 +126,36 @@ export async function apiRequest(path, { method = 'GET', body, token } = {}) {
 }
 
 export function registerAccount(body) {
-  return apiRequest('/user/register', { method: 'POST', body })
+  return apiRequest('/user/register', { method: 'POST', body, anonymous: true, skipRefresh: true })
 }
 
 export function loginAccount(body) {
-  return apiRequest('/user/login', { method: 'POST', body })
+  return apiRequest('/user/login', { method: 'POST', body, anonymous: true, skipRefresh: true })
 }
 
-export function logoutAccount(accessToken, refreshToken) {
+export function refreshAccessToken() {
+  if (!refreshInFlight) {
+    refreshInFlight = apiRequest('/user/refresh', {
+      method: 'POST',
+      anonymous: true,
+      skipRefresh: true,
+    })
+      .then((data) => {
+        memoryAccessToken = data.access_token
+        return data
+      })
+      .finally(() => {
+        refreshInFlight = null
+      })
+  }
+  return refreshInFlight
+}
+
+export function logoutAccount(accessToken) {
   return apiRequest('/user/logout', {
     method: 'POST',
     token: accessToken,
-    body: { refresh_token: refreshToken },
+    skipRefresh: true,
   })
 }
 

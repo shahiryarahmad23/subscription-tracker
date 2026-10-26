@@ -48,7 +48,7 @@ export function SubscriptionsProvider({ children }) {
   }, [accessToken, expireSession])
 
   async function withToken(action) {
-    const token = tokenOrExpired()
+    const token = await tokenOrExpired()
     if (!token) throw new ApiError('Your session has expired. Log in again.', 401, 'Not authenticated')
     try {
       return await action(token)

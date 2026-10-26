@@ -32,7 +32,7 @@ export default function HomePage() {
         <h1>Welcome</h1>
         <p className="lede">
           {user?.role === 'admin'
-            ? 'These are the accounts registered in Subscription Tracker.'
+            ? 'A snapshot of the accounts registered in Subscription Tracker.'
             : user
               ? 'Add a subscription to your account. It will show up on Subscriptions and Total.'
               : 'Log in to add subscriptions and see your spending.'}
@@ -84,7 +84,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {user?.role === 'admin' && <AdminAccounts />}
+      {user?.role === 'admin' && <AdminAccounts summaryOnly />}
     </article>
   )
 }

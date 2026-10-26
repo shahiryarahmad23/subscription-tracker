@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import {
   ApiError,
   isAccessTokenExpired,
@@ -7,7 +7,10 @@ import {
   loginAccount,
   logoutAccount,
   readAccessClaims,
+  refreshAccessToken,
   registerAccount,
+  getMemoryAccessToken,
+  setMemoryAccessToken,
 } from '../api.js'
 
 const AuthContext = createContext(null)
@@ -34,17 +37,37 @@ export function AuthProvider({ children }) {
   const [notice, setNotice] = useState('')
 
   const expireSession = useCallback(() => {
+    setMemoryAccessToken('')
     setSession(null)
     setNotice('Your session has expired. Log in again.')
   }, [])
 
-  function tokenOrExpired() {
-    if (!session) return null
-    if (isAccessTokenExpired(session.accessToken)) {
+  useEffect(() => {
+    let ignore = false
+    refreshAccessToken()
+      .then((data) => {
+        if (ignore) return
+        setSession({ accessToken: data.access_token, user: data.user })
+      })
+      .catch(() => {
+        if (!ignore) setSession(null)
+      })
+    return () => {
+      ignore = true
+    }
+  }, [])
+
+  async function tokenOrExpired() {
+    const current = getMemoryAccessToken()
+    if (current && !isAccessTokenExpired(current)) return current
+    try {
+      const data = await refreshAccessToken()
+      setSession({ accessToken: data.access_token, user: data.user })
+      return data.access_token
+    } catch {
       expireSession()
       return null
     }
-    return session.accessToken
   }
 
   async function register(form) {
@@ -62,9 +85,9 @@ export function AuthProvider({ children }) {
     })
     const next = {
       accessToken: tokens.access_token,
-      refreshToken: tokens.refresh_token,
       user: created,
     }
+    setMemoryAccessToken(tokens.access_token)
     setSession(next)
     setNotice('')
   }
@@ -78,7 +101,7 @@ export function AuthProvider({ children }) {
     const selectedRole = form.role === 'admin' ? 'admin' : 'user'
     if (user.role !== selectedRole) {
       try {
-        await logoutAccount(tokens.access_token, tokens.refresh_token)
+        await logoutAccount(tokens.access_token)
       } catch {
         // The login is rejected either way. A failed logout still must not start a session.
       }
@@ -90,25 +113,27 @@ export function AuthProvider({ children }) {
     }
     const next = {
       accessToken: tokens.access_token,
-      refreshToken: tokens.refresh_token,
       user,
     }
+    setMemoryAccessToken(tokens.access_token)
     setSession(next)
     setNotice('')
   }
 
   async function logout() {
-    const current = session
+    try {
+      let token = getMemoryAccessToken()
+      if (!token || isAccessTokenExpired(token)) {
+        const data = await refreshAccessToken()
+        token = data.access_token
+      }
+      await logoutAccount(token)
+    } catch {
+      // Leave the screen logged out even if the server is already signed out.
+    }
+    setMemoryAccessToken('')
     setSession(null)
     setNotice('')
-    if (!current) return
-    if (isAccessTokenExpired(current.accessToken)) return
-    try {
-      await logoutAccount(current.accessToken, current.refreshToken)
-    } catch (error) {
-      if (error instanceof ApiError && error.status === 401) return
-      setNotice(error.message || 'Could not log out.')
-    }
   }
 
   return (

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ApiError } from '../api.js'
 import { CURRENCIES, SERVICES, emptyForm } from '../data.js'
-import { validateForm } from '../subscription.js'
+import { todayString, validateForm } from '../subscription.js'
 
 export default function SubscriptionForm({
   initialForm,
@@ -108,6 +108,7 @@ export default function SubscriptionForm({
             id="start-date"
             type="date"
             value={form.startDate}
+            max={todayString()}
             onChange={(event) => updateField('startDate', event.target.value)}
           />
           {errors.startDate && <p className="field-error">{errors.startDate}</p>}

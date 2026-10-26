@@ -10,6 +10,13 @@ function isPositiveInteger(value) {
   return /^[1-9]\d*$/.test(String(value ?? '').trim())
 }
 
+export function todayString() {
+  const now = new Date()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  return `${now.getFullYear()}-${month}-${day}`
+}
+
 export function validateForm(form) {
   const errors = {}
 
@@ -39,6 +46,8 @@ export function validateForm(form) {
     errors.startDate = 'Choose a start date.'
   } else if (Number.isNaN(new Date(form.startDate + 'T00:00:00').getTime())) {
     errors.startDate = 'Enter a valid start date.'
+  } else if (form.startDate > todayString()) {
+    errors.startDate = 'Start date cannot be after today.'
   }
 
   if (form.duration.trim() === '') {

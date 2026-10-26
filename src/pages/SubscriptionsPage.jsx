@@ -37,7 +37,7 @@ export default function SubscriptionsPage() {
     return (
       <article className="page">
         <header className="page-header">
-          <h1>Subscriptions</h1>
+          <h1>User</h1>
           <p className="lede">Each account and how many subscriptions it has.</p>
         </header>
         <AdminAccounts manage />

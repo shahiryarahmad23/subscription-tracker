@@ -488,6 +488,11 @@ select:hover {
   font-weight: 500;
 }
 
+.plan-badge.is-admin {
+  background: var(--btn-bg);
+  color: var(--on-dark);
+}
+
 .item-meta {
   margin-top: 6px;
 }
@@ -593,6 +598,7 @@ select:hover {
 .role-toggle {
   display: flex;
   gap: 8px;
+  margin-bottom: 20px;
 }
 
 .role-option {

@@ -2,14 +2,13 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import FloatingBackground from './FloatingBackground.jsx'
 
-const links = [
-  { to: '/', label: 'Home', end: true },
-  { to: '/subscription', label: 'Subscriptions', end: false },
-  { to: '/total', label: 'Total', end: false },
-]
-
 export default function Layout() {
   const { user, logout } = useAuth()
+  const links = [
+    { to: '/', label: 'Home', end: true },
+    { to: '/subscription', label: user?.role === 'admin' ? 'User' : 'Subscriptions', end: false },
+    { to: '/total', label: 'Total', end: false },
+  ]
   const visibleLinks = links.filter((link) => user?.role !== 'admin' || link.to !== '/total')
 
   return (
