@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SubscriptionForm from '../components/SubscriptionForm.jsx'
+import AdminAccounts from '../components/AdminAccounts.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useSubscriptions } from '../context/SubscriptionsContext.jsx'
 import { formatDate, formatPrice, remainingLabel } from '../subscription.js'
@@ -28,6 +29,18 @@ export default function SubscriptionsPage() {
           <h1>Subscriptions</h1>
           <p className="lede">Log in to see your subscriptions.</p>
         </header>
+      </article>
+    )
+  }
+
+  if (user.role === 'admin') {
+    return (
+      <article className="page">
+        <header className="page-header">
+          <h1>Subscriptions</h1>
+          <p className="lede">Each account and how many subscriptions it has.</p>
+        </header>
+        <AdminAccounts manage />
       </article>
     )
   }

@@ -160,6 +160,27 @@ export function deleteSubscription(accessToken, id) {
   return apiRequest('/subscriptions/' + id, { method: 'DELETE', token: accessToken })
 }
 
+export async function listUserSubscriptions(accessToken, userId) {
+  try {
+    return await apiRequest('/user/' + userId + '/subscriptions', { token: accessToken })
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return []
+    throw error
+  }
+}
+
+export function setUserAccess(accessToken, userId, active) {
+  return apiRequest('/user/' + userId + '/access', {
+    method: 'PATCH',
+    token: accessToken,
+    body: { active },
+  })
+}
+
+export function deleteUser(accessToken, userId) {
+  return apiRequest('/user/' + userId, { method: 'DELETE', token: accessToken })
+}
+
 export function toSubscriptionBody(form) {
   return {
     service_name: form.serviceName,

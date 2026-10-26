@@ -263,10 +263,20 @@ select:hover {
 .session {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: 12px;
   color: var(--muted);
   font-size: 17px;
   font-weight: 500;
+}
+
+.session-label {
+  white-space: nowrap;
+}
+
+.session-logout {
+  flex: 0 0 auto;
+  width: auto;
 }
 
 .avatar {
@@ -580,6 +590,51 @@ select:hover {
   box-shadow: var(--shadow-button);
 }
 
+.role-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.role-option {
+  min-height: 44px;
+  padding: 0 18px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border-soft);
+  box-shadow: none;
+}
+
+.role-option:hover,
+.role-option.is-selected {
+  filter: none;
+  transform: none;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-soft-border);
+  box-shadow: none;
+}
+
+@media (max-width: 1100px) {
+  .navbar {
+    flex-wrap: wrap;
+    row-gap: 12px;
+    padding: 14px 20px 16px;
+  }
+
+  .nav-list {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .session {
+    margin-left: auto;
+  }
+
+  .nav-link {
+    padding: 8px 16px;
+  }
+}
+
 @media (max-width: 1024px) {
   .total-secondary {
     grid-template-columns: 1fr;
@@ -599,6 +654,11 @@ select:hover {
     flex-direction: column;
     align-items: stretch;
     padding: 16px;
+  }
+
+  .session {
+    margin-left: 0;
+    justify-content: flex-start;
   }
 
   .nav-list {

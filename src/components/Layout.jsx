@@ -10,6 +10,7 @@ const links = [
 
 export default function Layout() {
   const { user, logout } = useAuth()
+  const visibleLinks = links.filter((link) => user?.role !== 'admin' || link.to !== '/total')
 
   return (
     <div className="app-shell">
@@ -23,7 +24,7 @@ export default function Layout() {
             <span>Subscription Tracker</span>
           </NavLink>
           <ul className="nav-list">
-            {links.map((link) => (
+            {visibleLinks.map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
@@ -40,10 +41,10 @@ export default function Layout() {
               <span className="avatar" aria-hidden="true">
                 {user.username.slice(0, 1).toUpperCase()}
               </span>
-              <span>
+              <span className="session-label">
                 {user.username} · {user.role}
               </span>
-              <button type="button" className="button-quiet" onClick={logout}>
+              <button type="button" className="button-quiet session-logout" onClick={logout}>
                 Log out
               </button>
             </div>

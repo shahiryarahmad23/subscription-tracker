@@ -21,7 +21,7 @@ export default function TotalPage() {
   useEffect(() => {
     const currentTotals = totalsByCurrency(subscriptions)
     const shouldConvert = currentTotals.some((item) => item.currency !== target)
-    if (!shouldConvert) return
+    if (!shouldConvert || user?.role === 'admin') return
 
     let ignore = false
 
@@ -54,7 +54,18 @@ export default function TotalPage() {
     return () => {
       ignore = true
     }
-  }, [subscriptions, target, attempt])
+  }, [subscriptions, target, attempt, user])
+
+  if (user?.role === 'admin') {
+    return (
+      <article className="page">
+        <header className="page-header">
+          <h1>Total</h1>
+          <p className="lede">Spending totals are for user accounts. Admins manage accounts from Subscriptions.</p>
+        </header>
+      </article>
+    )
+  }
 
   const activeCount = subscriptions.filter((item) => item.active).length
   const sourceAmounts =

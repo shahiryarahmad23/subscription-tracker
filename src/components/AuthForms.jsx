@@ -11,6 +11,7 @@ const emptyAccount = {
 export default function AuthForms({ notice, onLogin, onRegister }) {
   const [mode, setMode] = useState('login')
   const [form, setForm] = useState(emptyAccount)
+  const [role, setRole] = useState('user')
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
 
@@ -38,8 +39,8 @@ export default function AuthForms({ notice, onLogin, onRegister }) {
 
     setSubmitting(true)
     try {
-      if (mode === 'register') await onRegister(form)
-      else await onLogin(form)
+      if (mode === 'register') await onRegister({ ...form, role })
+      else await onLogin({ ...form, role })
     } catch (error) {
       if (error instanceof ApiError && Object.keys(error.fields).length > 0) {
         setErrors(error.fields)
@@ -54,6 +55,22 @@ export default function AuthForms({ notice, onLogin, onRegister }) {
   return (
     <form className="surface form" onSubmit={handleSubmit} noValidate>
       <h2>{mode === 'register' ? 'Create an account' : 'Log in'}</h2>
+      <div className="role-toggle" role="group" aria-label="Account type">
+        <button
+          type="button"
+          className={role === 'user' ? 'role-option is-selected' : 'role-option'}
+          onClick={() => setRole('user')}
+        >
+          User
+        </button>
+        <button
+          type="button"
+          className={role === 'admin' ? 'role-option is-selected' : 'role-option'}
+          onClick={() => setRole('admin')}
+        >
+          Admin
+        </button>
+      </div>
       {notice && <p className="field-error">{notice}</p>}
       <div className="form-grid">
         <div className="field">

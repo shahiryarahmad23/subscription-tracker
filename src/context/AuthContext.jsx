@@ -48,12 +48,14 @@ export function AuthProvider({ children }) {
   }
 
   async function register(form) {
-    const created = await registerAccount({
+    const account = {
       username: form.username.trim(),
       password: form.password,
       email: form.email.trim(),
       dob: form.dob,
-    })
+    }
+    if (form.role === 'admin') account.role = 'admin'
+    const created = await registerAccount(account)
     const tokens = await loginAccount({
       username: form.username.trim(),
       password: form.password,
@@ -73,6 +75,19 @@ export function AuthProvider({ children }) {
       password: form.password,
     })
     const user = await profileForToken(tokens.access_token, form.username.trim())
+    const selectedRole = form.role === 'admin' ? 'admin' : 'user'
+    if (user.role !== selectedRole) {
+      try {
+        await logoutAccount(tokens.access_token, tokens.refresh_token)
+      } catch {
+        // The login is rejected either way. A failed logout still must not start a session.
+      }
+      const message =
+        selectedRole === 'admin'
+          ? 'This account is a user. Switch the toggle to User.'
+          : 'This account is an admin. Switch the toggle to Admin.'
+      throw new ApiError(message, 403, message)
+    }
     const next = {
       accessToken: tokens.access_token,
       refreshToken: tokens.refresh_token,
